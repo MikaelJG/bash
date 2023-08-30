@@ -74,53 +74,57 @@ ls -l | a '{print $5}'// print file size (bytes) for each file in current dir.
 
 \subsection{Cron}
 
-    A time-based job scheduler 
-    Run tasks or commands at specific intervals (every minute to monthly). 
-    Useful for backups and system updates 
+A time-based job scheduler 
+Run tasks or commands at specific intervals (every minute to monthly). 
+Useful for backups and system updates 
 \begin{verbatim}
-    edit crontab file (storing commands, times and job recurrence)
+edit crontab file (storing commands, times and job recurrence)
 \end{verbatim}
 
-    \subsubsection{Synthax}
+\subsubsection{Synthax}
 
-    : MIN HOUR DOM MON DOW CMD
+: MIN HOUR DOM MON DOW CMD
 
-    Field    Description    Allowed Value
+Field    Description    Allowed Value
 
-    MIN      Minute field    0 to 59
+MIN      Minute field    0 to 59
 
-    HOUR     Hour field      0 to 23
+HOUR     Hour field      0 to 23
 
-    DOM      Day of Month    1-31
+DOM      Day of Month    1-31
 
-    MON      Month field     1-12
+MON      Month field     1-12
 
-    DOW      Day Of Week     0-6
+DOW      Day Of Week     0-6
 
-    CMD      Command         Any command to be executed.
+CMD      Command         Any command to be executed.
 
-    \begin{verbatim}
-    30 8 * * * /path/to/command.sh // run script everyday 8:30am
-    \end{verbatim}
+\begin{verbatim}
+30 8 * * * /path/to/command.sh // run script everyday 8:30am
+\end{verbatim}
 
 \subsection{Ps and Bg}
+
 \begin{verbatim}
-    show processes
-    show background processes
+show processes
+show background processes
 \end{verbatim}
 
 \subsection{Top}
 \begin{verbatim}
 top example // continuous
 \end{verbatim}
+
 \subsection{Which & Whereis}
+
 \begin{verbatim}
 which gedit // user/bin/gedit 
 \end{verbatim}
 
 \subsection{Dpkg}
 
-     List all the installed applications
+List all the installed applications
+
 \begin{verbatim}
 dpkg list
 dpkg example 
@@ -142,74 +146,82 @@ bash -x complex_script.sh // step-by-step code execution.
 \subsection{Eval}
 
 \begin{verbatim}
-    Evaluate and execute commands from a string. 
-    When a string is passed to the eval command and evaluates the resulting command line as if it had been typed on the command line.
+Evaluate and execute commands from a string. 
+When a string is passed to the eval command and evaluates the resulting command line as if it had been typed on the command line.
 
-    eval echo "Hello, $USER!"
-    eval command will not fail if the command fails.  
+eval echo "Hello, $USER!"
+eval command will not fail if the command fails.  
 \end{verbatim}
 
 \subsection{Uname}
 
 \begin{verbatim}
-    Print OS basic system information, kernel name, version, release and machine hardware. 
+Print OS basic system information, kernel name, version, release and machine hardware. 
 \end{verbatim}
+
 \subsection{Trap}
 
 \begin{verbatim}
-Error handling
-Need more information on trap
+no ex yet. Error handling
 \end{verbatim}
 
 \subsection{Shred}
 \begin{verbatim}
+no ex yet.
 \end{verbatim}
 
 \subsection{Ln}
 
 \begin{verbatim}
 Ln -s // link soft?
-Symbolic links?
 \end{verbatim}
 
-\subsection{Su}
+\subsection{Curl}
+
 \begin{verbatim}
-// Switch user
+no ex yet.
 \end{verbatim}
 
-\subsection{Finger}
+\subsection{Wget}
 
 \begin{verbatim}
+no ex yet.
 \end{verbatim}
 
-\subsection{Curl & Wget}
+\subsection{Head}
 
 \begin{verbatim}
+no ex yet.
 \end{verbatim}
 
-\subsection{Head and Tail}
+\subsection{Tail}
+
 \begin{verbatim}
+no ex yet.
 \end{verbatim}
 
-\subsection{Cmp and Diff}
+\subsection{Cmp}
 
 \begin{verbatim}
-// compare files
+no ex yet.
+\end{verbatim}
+
+\subsection{Diff}
+
+\begin{verbatim}
+no ext yet // compare files
 \end{verbatim}
 
 \subsection{Sort}
 
 \begin{verbatim}
+no ex yet.
 \end{verbatim}
 
 \subsection{Grep}
 
 \begin{verbatim}
-\end{verbatim}
-
-\subsection{Realpath and Reallink}
-
-\begin{verbatim}
+no ex yet.
 \end{verbatim}
 
 \subsection{Strace}
@@ -228,45 +240,48 @@ Requires root privileges
 
 \chapter{Bash}
 
-\subsection{\#!/bin/bash vs \#!/bin/shell}
+\section{bin bash vs bin shell vs bin sh}
+
+\begin{verbatim}
 
 To the OS, the shebang (\#!) specifies the interpreter to use.
-
 To run a bash script, ZSH can invoke the Bash interpreter explicitly.
 
 It will run regardless of the user's default shell.
-
-\begin{verbatim}
 $ bash script.sh
 \end{verbatim}
 
-\subsection{Dirname (use relative locations)}
+\section{Dirname (use relative locations)}
 
 \begin{verbatim}
-    dirname /home/user/Documents/example.txt
-    # /home/user/Documents
+dirname /home/user/Documents/example.txt
+# /home/user/Documents
 
-    SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 \end{verbatim}
 
 \section{Globals}
 \begin{verbatim}
-  $HOME - the home directory of the current user.
-  $PWD - the present working directory.
-  $OLDPWD - the present working directory.
-  $USER - the username of the current user.
-  $SHELL - the name of the current shell.
-  $PATH - list of directories where executable programs are searched for.
-  $UID - the user ID of the current user.
-  $BROWSER - Default browser.
-  $EDITOR - Default text editor.
-  $XDG_CONFIG_HOME: $HOME/.config
-  $LINENO? -
-  $FUNCNAME[0] - parent function name?
-  ${FUNCNAME[0]}() - Output of the parent function name?
+$HOME - the home directory of the current user.
+$PWD - the present working directory.
+$OLDPWD - the present working directory.
+$USER - the username of the current user.
+$SHELL - the name of the current shell.
+$PATH - list of directories where executable programs are searched for.
+$UID - the user ID of the current user.
+$BROWSER - Default browser.
+$EDITOR - Default text editor.
+$XDG_CONFIG_HOME: $HOME/.config
+$LINENO? -
+$FUNCNAME[0] - parent function name?
+${FUNCNAME[0]}() - Output of the parent function name?
 \end{verbatim}
 
-\section{Common Functions}
+\section{Functions}
+
+\begin{verbatim}
+no ex yet.
+\end{verbatim}
 
 \subsection{Aliases}
 
@@ -276,37 +291,40 @@ $ bash script.sh
 \end{verbatim}
 
 \subsection{Installation}
+
 \begin{verbatim}
 if ! which "$1"; then
     # if argument given can't be found with which. 
     echo "it is not installed"
 fi
 \end{verbatim}
+
 \subsection{Uninstall}
 
 \begin{verbatim}
-        // list all apps with dpkg
-        sudo apt-get remove <application-name>
-        // remove any config files associated with app
-        sudo apt-get purge <application-name>
-        sudo apt purge?? (recent changes?) 
+// list all apps with dpkg
+sudo apt-get remove <application-name>
+// remove any config files associated with app
+sudo apt-get purge <application-name>
+sudo apt purge?? (recent changes?) 
 \end{verbatim}
 
 \subsection{Success}
 
 \begin{verbatim}
-      if ! which "$x" >/dev/null 2>&1
+if ! which "$x" >/dev/null 2>&1
 \end{verbatim}
 
 \subsection{Disregard}
 
 \begin{verbatim}
-     >/dev/null // redirect for output discard
-    ls > output.txt // directs the output to output.txt
-    ls >/dev/null // auto. discard
+ >/dev/null // redirect for output discard
+ls > output.txt // directs the output to output.txt
+ls >/dev/null // auto. discard
 \end{verbatim}
 
 \subsection{Conditions}
+
 \begin{verbatim}
 if [ -z "$EDITOR" ]; then // if var is unassigned
 [ -z "$EDITOR" ] && EDITOR=nano // then assign nano
@@ -392,11 +410,11 @@ echo -e "will\n"
 echo -e "do\n"
 \end{verbatim}
 
-\section{Bash\_Source}
+\section{Bash Source}
 
-    Array of source filename(s) and executed parent script or parent function.
-    Elements are what executed to reach the current point.
-    Debug or have context information.
+Array of source filename(s) and executed parent script or parent function.
+Elements are what executed to reach the current point.
+Debug or have context information.
 
 \begin{verbatim}
 ${BASH_SOURCE[0]}
@@ -477,7 +495,6 @@ basedir(){
     local full_dir=$(cd "${dir}" && pwd)
     echo ${full_dir} // why do I need {}?
 }
-
 \end{verbatim}
 
 \subsection{Flags (hasflag strategy)}
