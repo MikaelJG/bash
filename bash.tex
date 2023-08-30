@@ -176,22 +176,27 @@ export EDITOR=vim // assigned global
 \end{verbatim}
 
 \subsection{Bash}
+%keywords:code,execution,stack,steps,stepbystep,exec,codeexecution,allsteps
 
 \begin{verbatim}
 bash -x complex_script.sh // step-by-step code execution. 
 \end{verbatim}
 
 \subsection{Eval}
+%keywords:evaluate,evalutation
 
 \begin{verbatim}
 Evaluate and execute commands from a string. 
-When a string is passed to the eval command and evaluates the resulting command line as if it had been typed on the command line.
+When a string is passed to the eval command
+and evaluates the resulting command line as
+if it had been typed on the command line.
 
 eval echo "Hello, $USER!"
 eval command will not fail if the command fails.  
 \end{verbatim}
 
 \subsection{Uname}
+%keywords:systeminfo,infosystem,kernelname,info,infos,os,hardware
 
 \begin{verbatim}
 Print OS basic system information, kernel name, version, release and machine hardware. 
@@ -204,11 +209,13 @@ no ex yet. Error handling
 \end{verbatim}
 
 \subsection{Shred}
+
 \begin{verbatim}
 no ex yet.
 \end{verbatim}
 
 \subsection{Ln}
+%keywords:links,link,symbolic,symboliclinks,symboliclink,symlink,symlinks
 
 \begin{verbatim}
 Ln -s // link soft?
@@ -239,12 +246,14 @@ no ex yet.
 \end{verbatim}
 
 \subsection{Cmp}
+%keywords:compare
 
 \begin{verbatim}
 no ex yet.
 \end{verbatim}
 
 \subsection{Diff}
+%keywords:difference
 
 \begin{verbatim}
 no ext yet // compare files
@@ -263,6 +272,7 @@ no ex yet.
 \end{verbatim}
 
 \subsection{Strace}
+%keywords:syscall,syscal,syscalls,signal,signals
 
 \begin{verbatim}
 Debug by tracing a program's system calls and signals.
@@ -281,7 +291,6 @@ Requires root privileges
 \section{bin bash vs bin shell vs bin sh}
 
 \begin{verbatim}
-
 To the OS, the shebang (\#!) specifies the interpreter to use.
 To run a bash script, ZSH can invoke the Bash interpreter explicitly.
 
@@ -290,6 +299,7 @@ $ bash script.sh
 \end{verbatim}
 
 \section{Dirname (use relative locations)}
+%keywords:dirname,relativepath,relativepaths,relative,parentdir,parentpath,parent
 
 \begin{verbatim}
 dirname /home/user/Documents/example.txt
@@ -299,6 +309,8 @@ SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 \end{verbatim}
 
 \section{Globals}
+%keywords:global
+
 \begin{verbatim}
 $HOME - the home directory of the current user.
 $PWD - the present working directory.
@@ -316,19 +328,22 @@ ${FUNCNAME[0]}() - Output of the parent function name?
 \end{verbatim}
 
 \section{Functions}
+%keywords:fun,func,function
 
 \begin{verbatim}
 no ex yet.
 \end{verbatim}
 
 \subsection{Aliases}
+%keywords:alias
 
 \begin{verbatim}
-        .bash_aliases
-        alias great='dekg --list | grep "lib"'
+.bash_aliases
+alias great='dekg --list | grep "lib"'
 \end{verbatim}
 
 \subsection{Installation}
+%keywords:install,installed,ifinstalled,ifinstall,checkinstall
 
 \begin{verbatim}
 if ! which "$1"; then
@@ -338,6 +353,7 @@ fi
 \end{verbatim}
 
 \subsection{Uninstall}
+%keywords:removeapp
 
 \begin{verbatim}
 // list all apps with dpkg
@@ -348,12 +364,14 @@ sudo apt purge?? (recent changes?)
 \end{verbatim}
 
 \subsection{Success}
+%keywords:ifsuccessful,ifsuccess
 
 \begin{verbatim}
 if ! which "$x" >/dev/null 2>&1
 \end{verbatim}
 
 \subsection{Disregard}
+%keywords:devnull,dev,nooutput,redirect,direct
 
 \begin{verbatim}
  >/dev/null // redirect for output discard
@@ -361,17 +379,33 @@ ls > output.txt // directs the output to output.txt
 ls >/dev/null // auto. discard
 \end{verbatim}
 
-\subsection{Conditions}
+\subsection{Assign}
+%keywords:ifassigned,assigned,unassign,unsassigned
 
 \begin{verbatim}
-if [ -z "$EDITOR" ]; then // if var is unassigned
+if [ -z "$EDITOR" ]; then       // if var is unassigned
 [ -z "$EDITOR" ] && EDITOR=nano // then assign nano
+\end{verbatim}
 
+\subsection{File Check}
+%keywords:iffile,ifisfile,isfile
+
+\begin{verbatim}
 if [ -f ... ]; then // if its a file
 [ -f "$FILE" ] 
-[ -d "$FILE" ] // if its a directory
-[ -L "$FILE" ] // if its a symbolic link 
-[[ -n "$EDITOR" ]] // if its an empty string
+\end{verbatim}
+
+\subsection{Directory Check}
+%keywords:ifdir,ifisdir,ifdirectory,isdir,ifisdirectory
+
+\begin{verbatim}
+[ -d "$FILE" ]      // if its a directory
+\end{verbatim}
+
+\begin{verbatim}
+[ -L "$FILE" ]      // if its a symbolic link 
+
+[[ -n "$EDITOR" ]]  // if its an empty string
 [[ -n "$EDITOR" ]] && echo "it is set" || echo "it is not set"
 
 [[ $# -gt 0 ]] // arg. passed is "greater than" 0.
