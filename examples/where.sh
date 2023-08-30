@@ -1,0 +1,1 @@
+/home/tiike/code/bash/examples//whereis.sh

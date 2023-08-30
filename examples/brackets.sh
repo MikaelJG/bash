@@ -1,0 +1,1 @@
+/home/tiike/code/bash/examples//square_brackets.sh

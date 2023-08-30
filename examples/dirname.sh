@@ -1,0 +1,1 @@
+/home/tiike/code/bash/examples//dirname_use_relative_locations.sh
