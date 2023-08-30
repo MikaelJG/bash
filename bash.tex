@@ -331,7 +331,10 @@ ${FUNCNAME[0]}() - Output of the parent function name?
 %keywords:fun,func,function
 
 \begin{verbatim}
-no ex yet.
+function foo {
+  echo "$1"
+}
+foo $1 # arg passed
 \end{verbatim}
 
 \subsection{Aliases}
@@ -402,18 +405,32 @@ if [ -f ... ]; then // if its a file
 [ -d "$FILE" ]      // if its a directory
 \end{verbatim}
 
+\subsection{Link Check}
+%keywords:iflink,ifislink,ifsymlink,ifsymbolic,ifsymboliclink,
+
 \begin{verbatim}
 [ -L "$FILE" ]      // if its a symbolic link 
+\end{verbatim}
 
+\subsection{String Check}
+%keywords:ifempty,ifisempty,ifno,ifnostring,ifemptystring,ifnostring,ifisemptystring
+
+\begin{verbatim}
 [[ -n "$EDITOR" ]]  // if its an empty string
 [[ -n "$EDITOR" ]] && echo "it is set" || echo "it is not set"
+\end{verbatim}
 
+\subsection{Greater Than}
+%keywords:ifgreater,greater,lessthan,less,ifless,ifgreaterthan,iflessthan,isequal,ifequal,equal
+
+\begin{verbatim}
 [[ $# -gt 0 ]] // arg. passed is "greater than" 0.
 [[ $# -lt 5 ]] // arg. passed is "less than" 5.
 [[ "$2" -eq 0 ]] // verify 
 \end{verbatim}
 
 \section{Square Brackets}
+%keywords:square,brackets,bracket,squarebracket,twobrackets,twobracket,doublebrackets,doublebracket,singlebracket
 
 \begin{verbatim}
 [[ and ]] 
@@ -425,18 +442,18 @@ if [ -f ... ]; then // if its a file
 \end{verbatim}
 
 \section{Special Variables}
+%keywords:specialchar,specialcharacters,specialcharacter,numofarg,numarg,numberofarguments,numofargs,argnumber,argsnumber,argsnum
 
 \begin{verbatim}
 $! // ... 
 $? // check the return type
 $* // returned output ???
 $@ // passed arg. array 
-ARGS=("$@") // verify, explain this
-ARGS="$@"   // dif?
 $# // number of arg. passed.
 \end{verbatim}
 
 \section{Logical Operators}
+%keywords:operator,operators,logic,logical,logicaloperator
 
 \textbf{Use less if statements}
 
@@ -452,6 +469,8 @@ cat doesnt_exists.txt && echo "this will not be runned"
 \end{verbatim}
 
 \subsection{Chaining}
+%keywords:chains,chain
+
 Chaining two lines, executes after finished command.
 
 \begin{verbatim}
@@ -466,6 +485,7 @@ cat doesnt_exists.txt || echo "this will run"
 \end{verbatim}
 
 \section{Comments}
+%keywords:comment,eof,longcomment,endofline,endline
 
 \begin{verbatim}
 cat << EOF // or cat <<-EOF
@@ -483,6 +503,7 @@ echo -e "do\n"
 \end{verbatim}
 
 \section{Bash Source}
+%keywords:source,bashsource,shsource
 
 Array of source filename(s) and executed parent script or parent function.
 Elements are what executed to reach the current point.
@@ -493,7 +514,7 @@ ${BASH_SOURCE[0]}
 BASH_SOURCE's 0, script's name or executing function.
 
 function foo {
-  echo "Current script : ${BASH_SOURCE[0]}" // ... : /path/to/script.sh
+  echo "Current script : ${BASH_SOURCE[0]}"  // ... : /path/to/script.sh
   echo "Parent script is: ${BASH_SOURCE[1]}" // ...: 
 }
 \end{verbatim}
@@ -514,6 +535,7 @@ fi
 \section{Command Line}
 
 \subsection{Arguments}
+%keywords:arg,args,argument
 
 \begin{verbatim}
 ARGS=("$@")
@@ -536,6 +558,7 @@ grep -- -eu * // this succeeds
 \end{verbatim}
 
 \subsection{Pipefail}
+%keywords:failpipe
 
 \begin{verbatim}
 // Typically, a piped command is still called even if the first command fails
@@ -545,6 +568,7 @@ set -o pipefail // the whole pipe fails if one cmd fails.
 \end{verbatim}
 
 \subsection{Basedir - solve directories}
+%keywords:basedir
 
 \begin{verbatim}
 basedir(){
@@ -569,7 +593,8 @@ basedir(){
 }
 \end{verbatim}
 
-\subsection{Flags (hasflag strategy)}
+\subsection{Flags}
+%keywords:flag,ifflag,isflag,hasflag
 
 \begin{verbatim}
 gh repo create --private --source=. // private + source are flags
@@ -611,9 +636,9 @@ hasflag() {
 \end{verbatim}
 
 \subsection{help}
+%keywords:givehelp,helpbydefault,helpdefault,helpasdefault,givehelpasdefault
 
 \begin{verbatim}
-
     if [ -z "$1" ]; then // --help by default
         ARGS=("--help")
     else
@@ -621,45 +646,10 @@ hasflag() {
     fi
 
     [ -z "$1" ] && ARGS=("-help") || ARGS=("$@")
-
-    if $(hasflag --help -h); then
-        cat << EOT
-    
-    Usage: kdeploy <subcommand> <opts>
-    
-    Kubernetes deployment helper
-    Commands:
-    Options
-    -h --help           print help message
-    EOT
-        exit 0
-    fi
-\end{verbatim}
-
-\subsection{Options (readopt stategy)}
-
-\begin{verbatim}
-// var/${opt}=/ , is a regex tranforming everything after -- in a string. 
-// ${opt}*, find all options by finding --
-
-readopt() {
-    local opts="$@"
-    for var in "${ARGS[@]}"; do
-        for opt in $opts; do
-            if [[ "$var" = ${opts}* ]]; then
-                local value="${var/${opt}=/}"
-                if [ "$value" != "$var" ]; then // value could be extracted
-                    echo $value
-                    return
-                fi
-            fi
-        done
-    done
-    echo "" // Nothing found
-}
 \end{verbatim}
 
 \section{Brace expansion}
+%keywords:brace,expansion,braceexpansions
 
 \begin{verbatim}
 echo a{d,c,b}e // Order is prefered, not sorted.
@@ -669,6 +659,7 @@ chown root /usr/{ucb/{ex,edit},lib/{ex?.?*,how_ex}} // nested
 \end{verbatim}
 
 \subsection{Printf}
+%keywords:print
 
 format and print data like echo, with more formatting options.
 
