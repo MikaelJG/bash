@@ -337,6 +337,40 @@ function foo {
 foo $1 # arg passed
 \end{verbatim}
 
+
+\section{Variables}
+%keywords:var,vars,const
+
+\begin{verbatim}
+PATH=~/code/workflow
+cmd="--help"
+ARGS=("--help")
+\end{verbatim}
+
+
+\section{If Statement}
+%keywords:if,else,elseif,elsif,fi
+
+\begin{verbatim}
+if cd "$output_dir" >/dev/null 2>&1; then
+    echo "Output directory found"
+else
+    echo "Output directory ($output_dir) not found. I will attempt to create it."
+fi
+\end{verbatim}
+
+\section{Case Statement}
+%keywords:case,switch,switchstatement,casein
+
+\begin{verbatim}
+case $1 in
+    c)
+        cd $CPP_PATH;;
+    *)
+        cd $CMAKE_PATH;;
+esac
+\end{verbatim}
+
 \subsection{Aliases}
 %keywords:alias
 
