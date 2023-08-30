@@ -10,6 +10,7 @@
 Bash uses executables, located in /usr/bin (Really?).
 
 \subsection{ssed}
+%keywords:sed
 
 \begin{verbatim}
 _sed 's/foo/bar/g' file.txt // Replace all occurrences of "foo" with "bar".
@@ -23,21 +24,25 @@ _sed '/\^abc/s/foo/bar/g' file.txt // only in lines that start with "abc",
 \subsection{Awk}
 
 \begin{verbatim}
-    awk '{print $1}' file.txt // Print first field (divided space) for each line.
+awk '{print $1}' file.txt // Print first field (divided space) for each line.
 awk '/pattern/' file.txt
 awk '2$ ~ / pattern/ {print}' file.txt 
     Print all lines that contain "pattern" in the second field.
+
 awk -F ',' '{sum += 3} END {print sum}' file.csv 
     // Calculate the sum of the values in the third column of a csv.
+
 awk '{sum2+=$2; sum3+=$3} END {print "Sum2: ",sum2, " Avg3: ",sum3/NR}' file.txt
         // Print the sum of values in the second column,
         // and the average of values in the third column of a csv.
+
 awk -F ',' '$1 == $3 {print}' file.csv 
      Print only the lines that have the same value
      in the first and third columns of a csv.
 \end{verbatim}
 
 \subsection{Ls}
+%keywords:list,allfiles,filesarray,filearray,filear,filesar,listfiles,lsdir,lsdirectory
 
 \begin{verbatim}
 all_file=$(ls "${my_path}") // is affected by the shell's
@@ -50,18 +55,22 @@ ls -l | a '{print $5}'// print file size (bytes) for each file in current dir.
 \end{verbatim}
 
 \subsection{Wc}
+%keywords:linecount,countline,countlines,numlines,numberoflines,numberofline
 
 \begin{verbatim}
-    NLINES=$(wc -l < "$filename") // file line count
+NLINES=$(wc -l < "$filename") // file line count
 \end{verbatim}
 
 \subsection{Echo}
+%keywords:echos
+
 \begin{verbatim}
     echo -e // enables escape sequences.
     echo -e "First line\nSecond line" # \n - new line char.
 \end{verbatim}
 
 \subsection{Shopt}
+%keywords:shelloptions,shelloption,shellop
 
 \begin{verbatim}
     Set shell options, customize environment and behavior.
@@ -72,6 +81,7 @@ ls -l | a '{print $5}'// print file size (bytes) for each file in current dir.
 \end{verbatim}
 
 \subsection{Cron}
+%keywords:job,jobs,jobschedule,schedulejob,schedule,jobsschedule,jobscheduler,scheduler
 
 A time-based job scheduler 
 Run tasks or commands at specific intervals (every minute to monthly). 
@@ -82,6 +92,7 @@ edit crontab file (storing commands, times and job recurrence)
 \end{verbatim}
 
 \subsection{Synthax}
+%keywords:cronex,cronexample
 
 \begin{verbatim}
 : MIN HOUR DOM MON DOW CMD
@@ -103,31 +114,43 @@ CMD      Command         Any command to be executed.
 30 8 * * * /path/to/command.sh // run script everyday 8:30am
 \end{verbatim}
 
-\subsection{Ps and Bg}
+\subsection{Ps}
+%keywords:process,currentprocess,processes,currentprocesses,cpu,computerprocess,computerprocesses
 
 \begin{verbatim}
-show processes
-show background processes
+no ex yet, show processes
+\end{verbatim}
+
+\subsection{Bg}
+%keywords:backgroundprocess,backgroundprocesses,background,back
+
+\begin{verbatim}
+no ex yet, show background processes
 \end{verbatim}
 
 \subsection{Top}
+%keywords:topprocess,topprocesses,frontprocess,frontprocesses,front
+
 \begin{verbatim}
 top example // continuous
 \end{verbatim}
 
 \subsection{Which}
+%keywords:wich,wisch,whish
 
 \begin{verbatim}
 which gedit // user/bin/gedit 
 \end{verbatim}
 
 \subsection{Whereis}
+%keywords:where
 
 \begin{verbatim}
 no ex yet
 \end{verbatim}
 
 \subsection{Dpkg}
+%keywords:installedlist,applist,listapp,listapps,listprogram,listprograms,programlist,programslist
 
 List all the installed applications
 
@@ -136,7 +159,16 @@ dpkg list
 dpkg example 
 \end{verbatim}
 
-\subsection{Unset and Export}
+\subsection{Unset}
+%keywords:unsetvar,unsetvars
+
+\begin{verbatim}
+unset EDITOR, loses default editor variable // removed global
+export EDITOR=vim // assigned global
+\end{verbatim}
+
+\subsection{Export}
+%keywords:setvar,setvars,exportvar,exportvars
 
 \begin{verbatim}
 unset EDITOR, loses default editor variable // removed global
