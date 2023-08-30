@@ -9,126 +9,137 @@
 
 Bash uses executables, located in /usr/bin (Really?). \textbf{CD, SED, AWK, etc.}, 
 
-    \subsection{Sed}
+\subsection{Sed}
+
+\begin{verbatim}
+sed 's/foo/bar/g' file.txt // Replace all occurrences of "foo" with "bar".
+sed '/pattern/d' file.txt // Remove all lines containing "pattern" from a file.
+sed '/pattern/a new line' file.txt // Add a new line after each line that matches "pattern".
+sed '/0,/foo/s//bar/' file.txt // Replace the first occurrence of "foo" with "bar".
+sed '/\^abc/s/foo/bar/g' file.txt // only in lines that start with "abc", 
+// replace all occurrences of "foo" with "bar".
+\end{verbatim}
+
+\subsection{Awk}
+
+\begin{verbatim}
+    awk '{print $1}' file.txt // Print first field (divided space) for each line.
+\begin{verbatim}
+awk '/pattern/' file.txt
+awk '2$ ~ / pattern/ {print}' file.txt 
+    Print all lines that contain "pattern" in the second field.
+awk -F ',' '{sum += 3} END {print sum}' file.csv 
+    // Calculate the sum of the values in the third column of a csv.
+awk '{sum2+=$2; sum3+=$3} END {print "Sum2: ",sum2, " Avg3: ",sum3/NR}' file.txt
+        // Print the sum of values in the second column,
+        // and the average of values in the third column of a csv.
+awk -F ',' '$1 == $3 {print}' file.csv 
+     Print only the lines that have the same value
+     in the first and third columns of a csv.
+\end{verbatim}
+
+\subsection{Ls}
+
+\begin{verbatim}
+all_file=$(ls "${my_path}") // is affected by the shell's
+                           // interpretation of characters and whitespaces
+                           // use find instead 
+
+all_file=$(find "${my_path}") // is not affected
+
+ls -l | a '{print $5}'// print file size (bytes) for each file in current dir.
+\end{verbatim}
+
+\subsection{Wc}
+
+\begin{verbatim}
+    NLINES=$(wc -l < "$filename") // file line count
+\end{verbatim}
+
+\subsection{Echo}
+\begin{verbatim}
+    echo -e // enables escape sequences.
+    echo -e "First line\nSecond line" # \n - new line char.
+\end{verbatim}
+
+\subsection{Shopt}
+
+\begin{verbatim}
+    Set shell options, customize environment and behavior.
+
+    shopt -s // turn on a shell option.
+    shopt -u // turn off a shell option.
+    shopt // see status of all shell options (without arguments).
+\end{verbatim}
+
+\subsection{Cron}
+
+    A time-based job scheduler 
+    Run tasks or commands at specific intervals (every minute to monthly). 
+    Useful for backups and system updates 
+\begin{verbatim}
+    edit crontab file (storing commands, times and job recurrence)
+\end{verbatim}
+
+    \subsubsection{Synthax}
+
+    : MIN HOUR DOM MON DOW CMD
+
+    Field    Description    Allowed Value
+
+    MIN      Minute field    0 to 59
+
+    HOUR     Hour field      0 to 23
+
+    DOM      Day of Month    1-31
+
+    MON      Month field     1-12
+
+    DOW      Day Of Week     0-6
+
+    CMD      Command         Any command to be executed.
 
     \begin{verbatim}
-    sed 's/foo/bar/g' file.txt // Replace all occurrences of "foo" with "bar".
-    sed '/pattern/d' file.txt // Remove all lines containing "pattern" from a file.
-    sed '/pattern/a new line' file.txt // Add a new line after each line that matches "pattern".
-    sed '/0,/foo/s//bar/' file.txt // Replace the first occurrence of "foo" with "bar".
-    sed '/\^abc/s/foo/bar/g' file.txt // only in lines that start with "abc", 
-    // replace all occurrences of "foo" with "bar".
+    30 8 * * * /path/to/command.sh // run script everyday 8:30am
     \end{verbatim}
-    \subsection{Awk}
-    \begin{verbatim}
-        awk '{print $1}' file.txt // Print first field (divided space) for each line.
-    \begin{verbatim}
-    awk '/pattern/' file.txt
-    awk '2$ ~ / pattern/ {print}' file.txt 
-        Print all lines that contain "pattern" in the second field.
-    awk -F ',' '{sum += 3} END {print sum}' file.csv 
-        // Calculate the sum of the values in the third column of a csv.
-    awk '{sum2+=$2; sum3+=$3} END {print "Sum2: ",sum2, " Avg3: ",sum3/NR}' file.txt
-            // Print the sum of values in the second column,
-            // and the average of values in the third column of a csv.
-    awk -F ',' '$1 == $3 {print}' file.csv 
-         Print only the lines that have the same value
-         in the first and third columns of a csv.
-    \end{verbatim}
-    \subsection{Ls}
-    \begin{verbatim}
-    all_file=$(ls "${my_path}") // is affected by the shell's
-                               // interpretation of characters and whitespaces
-                               // use find instead 
 
-    all_file=$(find "${my_path}") // is not affected
-
-    ls -l | a '{print $5}'// print file size (bytes) for each file in current dir.
-    \end{verbatim}
-    \subsection{Wc}
-    \begin{verbatim}
-        NLINES=$(wc -l < "$filename") // file line count
-    \end{verbatim}
-    \subsection{Echo}
-    \begin{verbatim}
-        echo -e // enables escape sequences.
-        echo -e "First line\nSecond line" # \n - new line char.
-    \end{verbatim}
-    \subsection{Shopt}
-
-    \begin{verbatim}
-        Set shell options, customize environment and behavior.
-
-        shopt -s // turn on a shell option.
-        shopt -u // turn off a shell option.
-        shopt // see status of all shell options (without arguments).
-    \end{verbatim}
-
-    \subsection{Cron}
-
-        A time-based job scheduler 
-        Run tasks or commands at specific intervals (every minute to monthly). 
-        Useful for backups and system updates 
-    \begin{verbatim}
-        edit crontab file (storing commands, times and job recurrence)
-    \end{verbatim}
-        \subsubsection{Synthax}
-
-        : MIN HOUR DOM MON DOW CMD
-
-        Field    Description    Allowed Value
-
-        MIN      Minute field    0 to 59
-
-        HOUR     Hour field      0 to 23
-
-        DOM      Day of Month    1-31
-
-        MON      Month field     1-12
-
-        DOW      Day Of Week     0-6
-
-        CMD      Command         Any command to be executed.
-
-        \begin{verbatim}
-        30 8 * * * /path/to/command.sh // run script everyday 8:30am
-        \end{verbatim}
-    \subsection{Ps and Bg}
+\subsection{Ps and Bg}
 \begin{verbatim}
     show processes
     show background processes
 \end{verbatim}
 
-    \subsection{Top}
-    \begin{verbatim}
-    top example // continuous
-    \end{verbatim}
-    \subsection{Which & Whereis}
-    \begin{verbatim}
-    which gedit // user/bin/gedit 
-    \end{verbatim}
+\subsection{Top}
+\begin{verbatim}
+top example // continuous
+\end{verbatim}
+\subsection{Which & Whereis}
+\begin{verbatim}
+which gedit // user/bin/gedit 
+\end{verbatim}
 
-    \subsection{Dpkg}
+\subsection{Dpkg}
 
-         List all the installed applications
-    \begin{verbatim}
-    dpkg list
-    dpkg example 
-    \end{verbatim}
+     List all the installed applications
+\begin{verbatim}
+dpkg list
+dpkg example 
+\end{verbatim}
 
-    \subsection{Unset and Export}
+\subsection{Unset and Export}
 
-    \begin{verbatim}
-    unset EDITOR, loses default editor variable // removed global
-    export EDITOR=vim // assigned global
-    \end{verbatim}
+\begin{verbatim}
+unset EDITOR, loses default editor variable // removed global
+export EDITOR=vim // assigned global
+\end{verbatim}
 
-    \subsection{Bash}
-    \begin{verbatim}
-    bash -x complex_script.sh // step-by-step code execution. 
-    \end{verbatim}
+\subsection{Bash}
 
-    \subsection{Eval}
+\begin{verbatim}
+bash -x complex_script.sh // step-by-step code execution. 
+\end{verbatim}
+
+\subsection{Eval}
 
 \begin{verbatim}
     Evaluate and execute commands from a string. 
@@ -149,59 +160,432 @@ Bash uses executables, located in /usr/bin (Really?). \textbf{CD, SED, AWK, etc.
 Error handling
 Need more information on trap
 \end{verbatim}
+
 \subsection{Shred}
 \begin{verbatim}
 \end{verbatim}
 
 \subsection{Ln}
+
 \begin{verbatim}
 Ln -s // link soft?
 Symbolic links?
 \end{verbatim}
+
 \subsection{Su}
 \begin{verbatim}
 // Switch user
 \end{verbatim}
+
 \subsection{Finger}
+
 \begin{verbatim}
 \end{verbatim}
 
 \subsection{Curl & Wget}
+
 \begin{verbatim}
 \end{verbatim}
 
 \subsection{Head and Tail}
 \begin{verbatim}
 \end{verbatim}
+
 \subsection{Cmp and Diff}
+
 \begin{verbatim}
 // compare files
 \end{verbatim}
+
 \subsection{Sort}
+
 \begin{verbatim}
 \end{verbatim}
 
 \subsection{Grep}
+
 \begin{verbatim}
 \end{verbatim}
 
 \subsection{Realpath and Reallink}
+
 \begin{verbatim}
 \end{verbatim}
 
 \subsection{Strace}
-\begin{verbatim}
-Debug by tracing a program's system calls and signals. Its interaction with the OS.
 
-Calls include file operations, network communication, process management, interrupts or termination signals.
-Identify file access problems, permission errors, resource usage or unexpected behavior. 
+\begin{verbatim}
+Debug by tracing a program's system calls and signals.
+Its interaction with the OS.
+
+Calls include file operations, network communication,
+process management, interrupts or termination signals.
+Identify file access problems, permission errors,
+resource usage or unexpected behavior. 
 
 Requires root privileges
 \end{verbatim}
 
-\section{Wtf is .profile?}
+\chapter{Bash}
+
+\subsection{\#!/bin/bash vs \#!/bin/shell}
+
+To the OS, the shebang (\#!) specifies the interpreter to use.
+
+To run a bash script, ZSH can invoke the Bash interpreter explicitly.
+
+It will run regardless of the user's default shell.
 
 \begin{verbatim}
+$ bash script.sh
+\end{verbatim}
+
+\subsection{Dirname (use relative locations)}
+
+\begin{verbatim}
+    dirname /home/user/Documents/example.txt
+    # /home/user/Documents
+
+    SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+\end{verbatim}
+
+\section{Globals}
+\begin{verbatim}
+  $HOME - the home directory of the current user.
+  $PWD - the present working directory.
+  $OLDPWD - the present working directory.
+  $USER - the username of the current user.
+  $SHELL - the name of the current shell.
+  $PATH - list of directories where executable programs are searched for.
+  $UID - the user ID of the current user.
+  $BROWSER - Default browser.
+  $EDITOR - Default text editor.
+  $XDG_CONFIG_HOME: $HOME/.config
+  $LINENO? -
+  $FUNCNAME[0] - parent function name?
+  ${FUNCNAME[0]}() - Output of the parent function name?
+\end{verbatim}
+
+\section{Common Functions}
+
+\subsection{Aliases}
+
+\begin{verbatim}
+        .bash_aliases
+        alias great='dekg --list | grep "lib"'
+\end{verbatim}
+
+\subsection{Installation}
+\begin{verbatim}
+if ! which "$1"; then
+    # if argument given can't be found with which. 
+    echo "it is not installed"
+fi
+\end{verbatim}
+\subsection{Uninstall}
+
+\begin{verbatim}
+        // list all apps with dpkg
+        sudo apt-get remove <application-name>
+        // remove any config files associated with app
+        sudo apt-get purge <application-name>
+        sudo apt purge?? (recent changes?) 
+\end{verbatim}
+
+\subsection{Success}
+
+\begin{verbatim}
+      if ! which "$x" >/dev/null 2>&1
+\end{verbatim}
+
+\subsection{Disregard}
+
+\begin{verbatim}
+     >/dev/null // redirect for output discard
+    ls > output.txt // directs the output to output.txt
+    ls >/dev/null // auto. discard
+\end{verbatim}
+
+\subsection{Conditions}
+\begin{verbatim}
+if [ -z "$EDITOR" ]; then // if var is unassigned
+[ -z "$EDITOR" ] && EDITOR=nano // then assign nano
+
+if [ -f ... ]; then // if its a file
+[ -f "$FILE" ] 
+[ -d "$FILE" ] // if its a directory
+[ -L "$FILE" ] // if its a symbolic link 
+[[ -n "$EDITOR" ]] // if its an empty string
+[[ -n "$EDITOR" ]] && echo "it is set" || echo "it is not set"
+
+[[ $# -gt 0 ]] // arg. passed is "greater than" 0.
+[[ $# -lt 5 ]] // arg. passed is "less than" 5.
+[[ "$2" -eq 0 ]] // verify 
+\end{verbatim}
+
+\section{Square Brackets}
+
+\begin{verbatim}
+[[ and ]] 
+    delimits the conditional expression. 
+    but they provide more features and are generally preferred.
+
+[ and ]
+    test expressions, but have less features.
+\end{verbatim}
+
+\section{Special Variables}
+
+\begin{verbatim}
+$! // ... 
+$? // check the return type
+$* // returned output ???
+$@ // passed arg. array 
+ARGS=("$@") // verify, explain this
+ARGS="$@"   // dif?
+$# // number of arg. passed.
+\end{verbatim}
+
+\section{Logical Operators}
+
+\textbf{Use less if statements}
+
+\begin{verbatim}
+& (Simultaniously)
+    Execute commands simultaniously, unfinished or not.
+&& (if succeeds)
+    Only runs the second command if the first one succeeded.
+    Command finished.
+
+cat doesnt_exists.txt && echo "this will not be runned" 
+[ -z "$EDITOR" ] && EDITOR=nano // not assigned, so
+\end{verbatim}
+
+\subsection{Chaining}
+Chaining two lines, executes after finished command.
+
+\begin{verbatim}
+cat file.txt >> out.txt ; xdg-open out.txt 
+\end{verbatim}
+
+\subsection{Double Pipes if fails}
+
+\begin{verbatim}
+cat exists.txt || echo "this will not be runned" 
+cat doesnt_exists.txt || echo "this will run" 
+\end{verbatim}
+
+\section{Comments}
+
+\begin{verbatim}
+cat << EOF // or cat <<-EOF
+This is a comment:
+
+The EOF token must begin the line,
+You can't indent it with its related code. 
+EOF
+
+<<-EOF // indentable with Tab only. No white space after EOF.
+
+echo -e "anything\n"
+echo -e "will\n"
+echo -e "do\n"
+\end{verbatim}
+
+\section{Bash\_Source}
+
+    Array of source filename(s) and executed parent script or parent function.
+    Elements are what executed to reach the current point.
+    Debug or have context information.
+
+\begin{verbatim}
+${BASH_SOURCE[0]}
+BASH_SOURCE's 0, script's name or executing function.
+
+function foo {
+  echo "Current script : ${BASH_SOURCE[0]}" // ... : /path/to/script.sh
+  echo "Parent script is: ${BASH_SOURCE[1]}" // ...: 
+}
+\end{verbatim}
+
+\section{Refactoring}
+
+\begin{verbatim}
+if [[ " $2 " -eq 0 ]];
+    then
+    $READER_PATH $2 $1
+else
+    $READER_PATH $1
+fi
+
+[[ "$2" -eq 0 ]] && $READER_PATH "$2" "$1" || $READER_PATH "$1"
+\end{verbatim}
+
+\section{Command Line}
+
+\subsection{Arguments}
+
+\begin{verbatim}
+ARGS=("$@")
+\end{verbatim}
+
+\subsection{Set -eu}
+
+\begin{verbatim}
+// Shell scripts are cmd lists, runned whether one fails or not.
+// It goes on and on. You may not notice one failing. 
+
+set -e // as soon as one command fails, stop script. 
+set -u // as soon as you use an undefined variable, 
+       // the whole script breaks (stops with error)
+
+set -eu // one liner
+
+grep -eu * // this fails
+grep -- -eu * // this succeeds
+\end{verbatim}
+
+\subsection{Pipefail}
+
+\begin{verbatim}
+// Typically, a piped command is still called even if the first command fails
+false | grep -- -eu * // grep is called
+
+set -o pipefail // the whole pipe fails if one cmd fails. 
+\end{verbatim}
+
+\subsection{Basedir - solve directories}
+
+\begin{verbatim}
+basedir(){
+    local script=${BASH_SOURCE[0]}} // this script's location
+
+    if [ -L $script ]; then // if symbolic link
+        if readlink -f $script >/dev/null 2>&1; then // resolve link
+            script=$(readlink -f $script)
+        elif readlink $script >/dev/null 2>&1; then
+            script=$(readlink $script)
+        elif realpath $script >/dev/null 2>&1; then
+            script=$(realpath $script)
+        else
+            echo "ERROR: Cannot resolve symbolic link $script"
+            exit 1 
+        fi
+    fi
+
+    local dir=$(dirname "$script") // this script's directory
+    local full_dir=$(cd "${dir}" && pwd)
+    echo ${full_dir} // why do I need {}?
+}
 
 \end{verbatim}
 
+\subsection{Flags (hasflag strategy)}
+
+\begin{verbatim}
+gh repo create --private --source=. // private + source are flags
+hasflag() {
+    local flag=${1} // for mandatory arguments. 
+    local flag=${1:-} // for optional arguments
+                      // convert no arg. to empty string. 
+}
+
+hasflag() {
+    local flag=${1} // check one given argument (one given flag)
+    for arg in $ARGS; do // ARGS("$@")
+        if [ "$flag" = "$arg" ]; then // "" since empty flag is possible.
+            echo "true"
+        fi
+    done
+    echo "false"
+}
+
+if $(hasflag --devopscon); then /genius implementation
+    echo "it has --devopscon"
+fi
+
+// The echo "true" strategy is genius here. 
+// It return the string "true"
+// Yet BASH will consider it as a boolean, evaluated in subshell
+
+hasflag() {
+    for var in "${ARGS[@]}"; do // check all flags, all args
+        for flag in $flags; do // possible flags saved in $flags
+            if [ "$var" = "$flag" ]; then
+                echo "true"
+                return
+            fi
+        done
+    done
+    echo "false"
+}
+\end{verbatim}
+
+\subsection{-help}
+
+\begin{verbatim}
+
+    if [ -z "$1" ]; then // --help by default
+        ARGS=("--help")
+    else
+        ARGS=("$@")
+    fi
+
+    [ -z "$1" ] && ARGS=("-help") || ARGS=("$@")
+
+    if $(hasflag --help -h); then
+        cat << EOT
+    
+    Usage: kdeploy <subcommand> <opts>
+    
+    Kubernetes deployment helper
+    Commands:
+    Options
+    -h --help           print help message
+    EOT
+        exit 0
+    fi
+\end{verbatim}
+
+\subsection{Options (readopt stategy)}
+
+\begin{verbatim}
+// var/${opt}=/ , is a regex tranforming everything after -- in a string. 
+// ${opt}*, find all options by finding --
+
+readopt() {
+    local opts="$@"
+    for var in "${ARGS[@]}"; do
+        for opt in $opts; do
+            if [[ "$var" = ${opts}* ]]; then
+                local value="${var/${opt}=/}"
+                if [ "$value" != "$var" ]; then // value could be extracted
+                    echo $value
+                    return
+                fi
+            fi
+        done
+    done
+    echo "" // Nothing found
+}
+\end{verbatim}
+
+\section{Brace expansion}
+
+\begin{verbatim}
+echo a{d,c,b}e // Order is prefered, not sorted.
+ade ace abe
+mkdir /usr/local/src/bash/{old,new,dist,bugs}
+chown root /usr/{ucb/{ex,edit},lib/{ex?.?*,how_ex}} // nested
+\end{verbatim}
+
+\subsection{Printf}
+
+format and print data like echo, with more formatting options.
+
+\begin{verbatim}
+printf format_string [argument1] [argument2] ...
+printf "a %s %s beautiful example" very eloquent
+printf "Hello, world!\n" // Print a string with a newline character
+printf "Pi is approximately %.2f\n" 3.14159 // Pi is approximately 3.14159
+\end{verbatim}
