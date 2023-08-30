@@ -1,7 +1,4 @@
 
-no ex yet.
-
-
 function foo {
   echo "$1"
 }
