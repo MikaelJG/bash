@@ -1,0 +1,452 @@
+\chapter{Bash}
+
+\section{Bash Command Language}
+
+Command languages control jobs, a domain-specific and interpreted language.
+
+\subsection{\#!/bin/bash vs \#!/bin/shell}
+
+To the OS, the shebang (\#!) specifies the interpreter to use.
+
+To run a bash script, ZSH can invoke the Bash interpreter explicitly.
+
+It will run regardless of the user's default shell.
+
+\begin{verbatim}
+$ bash script.sh
+\end{verbatim}
+
+\subsection{Dirname (use relative locations)}
+\begin{verbatim}
+    dirname /home/user/Documents/example.txt
+    # /home/user/Documents
+
+    SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+\end{verbatim}
+
+\section{Globals}
+\begin{verbatim}
+  $HOME - the home directory of the current user.
+  $PWD - the present working directory.
+  $USER - the username of the current user.
+  $SHELL - the name of the current shell.
+  $PATH - list of directories where executable programs are searched for.
+  $UID - the user ID of the current user.
+  $BROWSER - Default browser.
+  $EDITOR - Default text editor.
+  $XDG_CONFIG_HOME: $HOME/.config
+  $LINENO? -
+  $FUNCNAME[0] - parent function name?
+  ${FUNCNAME[0]}() - Output of the parent function name?
+\end{verbatim}
+
+\section{Common Functions}
+    \subsection{Aliases}
+\begin{verbatim}
+        .bash_aliases
+        alias great='dekg --list | grep "lib"'
+\end{verbatim}
+
+    \subsection{Installation}
+\begin{verbatim}
+        if ! which "$1"; then
+            # if argument given can't be found with which. 
+            echo "it is not installed"
+        fi
+\end{verbatim}
+    \subsection{Uninstall}
+\begin{verbatim}
+        // list all apps with dpkg
+        sudo apt-get remove <application-name>
+        // remove any config files associated with app
+        sudo apt-get purge <application-name>
+        sudo apt purge?? (recent changes?) 
+\end{verbatim}
+    \subsection{Success}
+        why would I return 1?
+\begin{verbatim}
+      std::cout << "Enter 1 for yes, 0 for no.\n";
+      std::cin >> support;
+      return support;
+
+      if ! which "$x" >/dev/null 2>&1
+      More on return types 1 - 0
+\end{verbatim}
+    \subsection{Disregard}
+\begin{verbatim}
+     >/dev/null // redirect for output discard
+    ls > output.txt // directs the output to output.txt
+    ls >/dev/null // auto. discard
+\end{verbatim}
+
+    \subsection{Conditions}
+\begin{verbatim}
+    if [ -z "$EDITOR" ]; then // if var is unassigned
+    [ -z "$EDITOR" ] && EDITOR=nano // then assign nano
+
+    if [ -f ... ]; then // if its a file
+    [ -f "$FILE" ] 
+    [ -d "$FILE" ] // if its a directory
+    [ -L "$FILE" ] // if its a symbolic link 
+    [[ -n "$EDITOR" ]] // if its an empty string
+    [[ -n "$EDITOR" ]] && echo "it is set" || echo "it is not set"
+
+    [[ $# -gt 0 ]] // arg. passed is "greater than" 0.
+    [[ $# -lt 5 ]] // arg. passed is "less than" 5.
+    [[ "$2" -eq 0 ]] // verify 
+\end{verbatim}
+
+\section{[[ ]]}
+
+\begin{verbatim}
+[[ and ]] 
+    delimits the conditional expression. 
+    but they provide more features and are generally preferred.
+
+[ and ]
+    test expressions, but have less features.
+\end{verbatim}
+
+\section{Special Variables}
+\begin{verbatim}
+$! // ... 
+$? // check the return type
+$* // returned output ???
+$@ // passed arg. array 
+ARGS=("$@") // verify, explain this
+ARGS="$@"   // dif?
+$# // number of arg. passed.
+\end{verbatim}
+
+\section{Logical Operators}
+
+\textbf{Use less if statements}
+
+    \subsection{\& (Simultaniously)}
+        Execute commands simultaniously, unfinished or not.
+    \subsection{\&\& (if succeeds)}
+        Only runs the second command if the first one succeeded.
+        Command finished.
+
+\begin{verbatim}
+        cat doesnt_exists.txt && echo "this will not be runned" 
+        [ -z "$EDITOR" ] && EDITOR=nano // not assigned, so
+\end{verbatim}
+
+    \subsection{; (chaining)}
+    Chaining two lines, executes after finished command.
+    
+    \begin{verbatim}
+    cat file.txt >> out.txt ; xdg-open out.txt 
+    \end{verbatim}
+
+    \subsection{\|\| (if fails)}
+    Only runs the second command if the first one failed
+
+\begin{verbatim}
+    cat exists.txt || echo "this will not be runned" 
+    cat doesnt_exists.txt || echo "this will run" 
+\end{verbatim}
+
+\section{Comments}
+
+\begin{verbatim}
+    cat << EOF // or cat <<-EOF
+    This is a comment:
+
+    The EOF token must begin the line,
+    You can't indent it with its related code. 
+    EOF
+
+    <<-EOF // indentable with Tab only. No white space after EOF.
+
+    echo -e "anything\n"
+    echo -e "will\n"
+    echo -e "do\n"
+\end{verbatim}
+    
+    \begin{verbatim}
+    \end{verbatim}
+    
+\section{Bash\_Source}
+
+    Array of source filename(s) and executed parent script or parent function.
+    Elements are what executed to reach the current point.
+    Debug or have context information.
+
+\begin{verbatim}
+    ${BASH_SOURCE[0]}
+    BASH_SOURCE's 0, script's name or executing function.
+
+    function foo {
+      echo "Current script : ${BASH_SOURCE[0]}" // ... : /path/to/script.sh
+      echo "Parent script is: ${BASH_SOURCE[1]}" // ...: 
+    }
+\end{verbatim}
+\section{Refactoring}
+\begin{verbatim}
+    if [[ " $2 " -eq 0 ]];
+        then
+        $READER_PATH $2 $1
+    else
+        $READER_PATH $1
+    fi
+
+    [[ "$2" -eq 0 ]] && $READER_PATH "$2" "$1" || $READER_PATH "$1"
+\end{verbatim}
+
+\section{Command Line}
+\subsection{Args}
+
+\begin{verbatim}
+    ARGS=("$@") // always store arguments
+\end{verbatim}
+
+\subsection{Set -eu}
+
+\begin{verbatim}
+// Shell scripts are cmd lists, runned whether one fails or not.
+// It goes on and on. You may not notice one failing. 
+
+set -e // as soon as one command fails, stop script. 
+set -u // as soon as you use an undefined variable, 
+       // the whole script breaks (stops with error)
+
+set -eu // one liner
+
+grep -eu * // this fails
+grep -- -eu * // this succeeds
+
+// Hub's recommendation. Don't use global vars, 
+// but evaluation of functions for return values
+\end{verbatim}
+
+\subsection{Pipefail}
+
+\begin{verbatim}
+// Typically, a piped command is still called even if the first command fails
+false | grep -- -eu * // grep is called
+
+set -o pipefail // the whole pipe fails if one cmd fails. 
+\end{verbatim}
+
+\subsection{Basedir - solve directories}
+
+\begin{verbatim}
+basedir(){
+    local script=${BASH_SOURCE[0]}} // this script's location
+
+    if [ -L $script ]; then // if symbolic link
+        if readlink -f $script >/dev/null 2>&1; then // resolve link
+            script=$(readlink -f $script)
+        elif readlink $script >/dev/null 2>&1; then
+            script=$(readlink $script)
+        elif realpath $script >/dev/null 2>&1; then
+            script=$(realpath $script)
+        else
+            echo "ERROR: Cannot resolve symbolic link $script"
+            exit 1 
+        fi
+    fi
+
+    local dir=$(dirname "$script") // this script's directory
+    local full_dir=$(cd "${dir}" && pwd)
+    echo ${full_dir} // why do I need {}?
+}
+
+\end{verbatim}
+
+\subsection{Flags (hasflag strategy)}
+
+\begin{verbatim}
+gh repo create --private --source=. // private + source are flags
+hasflag() {
+    local flag=${1} // for mandatory arguments. 
+    local flag=${1:-} // for optional arguments
+                      // convert no arg. to empty string. 
+}
+
+hasflag() {
+    local flag=${1} // check one given argument (one given flag)
+    for arg in $ARGS; do // ARGS("$@")
+        if [ "$flag" = "$arg" ]; then // "" since empty flag is possible.
+            echo "true"
+        fi
+    done
+    echo "false"
+}
+
+if $(hasflag --devopscon); then /genius implementation
+    echo "it has --devopscon"
+fi
+
+// The echo "true" strategy is genius here. 
+// It return the string "true"
+// Yet BASH will consider it as a boolean, evaluated in subshell
+
+hasflag() {
+    for var in "${ARGS[@]}"; do // check all flags, all args
+        for flag in $flags; do // possible flags saved in $flags
+            if [ "$var" = "$flag" ]; then
+                echo "true"
+                return
+            fi
+        done
+    done
+    echo "false"
+}
+\end{verbatim}
+
+\subsection{-help}
+
+\begin{verbatim}
+
+    if [ -z "$1" ]; then // --help by default
+        ARGS=("--help")
+    else
+        ARGS=("$@")
+    fi
+
+    [ -z "$1" ] && ARGS=("-help") || ARGS=("$@")
+
+    if $(hasflag --help -h); then
+        cat << EOT
+    
+    Usage: kdeploy <subcommand> <opts>
+    
+    Kubernetes deployment helper
+    Commands:
+    Options
+    -h --help           print help message
+    EOT
+        exit 0
+    fi
+\end{verbatim}
+
+\subsection{Options (readopt stategy)}
+
+\begin{verbatim}
+// var/${opt}=/ , is a regex tranforming everything after -- in a string. 
+// ${opt}*, find all options by finding --
+
+readopt() {
+    local opts="$@"
+    for var in "${ARGS[@]}"; do
+        for opt in $opts; do
+            if [[ "$var" = ${opts}* ]]; then
+                local value="${var/${opt}=/}"
+                if [ "$value" != "$var" ]; then // value could be extracted
+                    echo $value
+                    return
+                fi
+            fi
+        done
+    done
+    echo "" // Nothing found
+}
+\end{verbatim}
+
+\subsection{Run}
+
+\begin{verbatim}
+    An architecture strategy for complex shell scripts
+
+    // have ARGS=("$@"), basedir function. 
+    // It assumes your have a command directory with all possible commands for your script. 
+    // basedir/commands/name-of-first-command.sh
+
+    run() {
+        local cmd=${1}
+        if [ -f $(basedir)/commands/"$cmd" ]; then
+            source $(basedir)/commands/"$cmd" // get the info from the command file
+            eval "$cmd::run"
+        fi
+    }
+
+    run(cleaner) // is directory/commands/cleaner a command file?
+                 // eval cleaner::run
+\end{verbatim}
+
+\section{Debug}
+
+\subsection{check\_error}
+\begin{verbatim}
+    // Genius check_error function to check for "ERROR" prefix.
+    // It will understand you echo "ERROR: ..."
+
+    check_error(){
+        local msg="$*"
+        if [ "${msg//ERROR/}" != "${msg}" ]; then
+            echo "${msg}"
+            exit 1
+        fi
+    }
+
+    if [ -z "${deployment}" ]; then
+        echo "ERROR: canary - No deployment provided with --deployment"
+        exit 1
+    fi
+
+    local old_deploy=$(get_deployment "$deployment")
+    check_error $old_deploy
+
+    // CHECK ERROR only checks if the return has the "ERROR" prefix. 
+    // if it does, it exits with 1 
+\end{verbatim}
+
+\subsection{Verbose Errors (better bash -x)}
+    
+\begin{verbatim}
+if --verbose is an option, print more info, genius to understand flow
+$ kdeploy --verbose canary
+
+if $(hasflag --verbose -v); then
+    export PS4='+($(basename ${BASH_SOURCE[0]}):${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+    set -x
+fi
+\end{verbatim}
+
+\section{Synthax}
+\subsection{Brace expansion}
+
+\begin{verbatim}
+        echo a{d,c,b}e // Order is prefered, not sorted.
+        ade ace abe
+        mkdir /usr/local/src/bash/{old,new,dist,bugs}
+        chown root /usr/{ucb/{ex,edit},lib/{ex?.?*,how_ex}} // nested
+\end{verbatim}
+
+\subsection{Printf}
+
+    format and print data like echo, with more formatting options.
+
+\begin{verbatim}
+    printf format_string [argument1] [argument2] ...
+    printf "a %s %s beautiful example" very eloquent
+    printf "Hello, world!\n" // Print a string with a newline character
+    printf "Pi is approximately %.2f\n" 3.14159 // Pi is approximately 3.14159
+\end{verbatim}
+
+\section{Testing}
+\subsection{Bats (BASH automated testing system)}
+
+    Testing framework (unsupported, but still working) 
+    like junit (java testing framework), for shell scripts. 
+
+sstephenson/bats
+
+\begin{verbatim}
+
+#!/usr/bin/env bats
+
+@test "addition using bc" {
+    result="$echo 2+2 | bc)"
+    [ "$result" -eq 4]
+}
+
+@test "addition using dc" {
+    result="$(echo 2 2+2p | dc)"
+    [ "$result" -eq 4 }
+}
+\end{verbatim}
+
